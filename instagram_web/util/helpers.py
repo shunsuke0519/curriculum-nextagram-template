@@ -8,6 +8,7 @@ s3 = boto3.client(
     aws_secret_access_key=Config.S3_SECRET
 )
 
+#function to upload image
 def upload_file_to_s3(file, acl="public-read"): # acl = access
 
     try:

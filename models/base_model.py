@@ -26,3 +26,8 @@ class BaseModel(pw.Model):
     class Meta:
         database = db
         legacy_table_names = False
+
+
+# When user signs up
+# user_password = "somesecretpassword"
+# hashed_password = generate_password_hash(user_password) # store this in database
