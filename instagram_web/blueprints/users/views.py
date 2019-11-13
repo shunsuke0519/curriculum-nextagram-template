@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, url_for, request, flash, redirect
 from models.user import User
+from werkzeug.security import check_password_hash, generate_password_hash
+import re
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -22,7 +24,22 @@ def new():
 def create():
     user_email = request.form.get("email")
     user_name = request.form.get("name")
-    user_password = request.form.get("password")
+    password = request.form.get("password")
+    # hashed_password = generate_password_hash(password) # store this in database
+    # user_password = hashed_password
+    user_password = generate_password_hash(password)
+
+    if len(user_password) < 6 :
+        flash("Password must be more than 6 characters !", "danger")
+        return render_template('users/new.html')
+    elif not re.search(r"([A-Z]+[a-z]+|[a-z]+[A-Z]+)", user_password):
+        flash("Password must contain at least one(1) upper and one(1) lower case", "danger")
+        return render_template('users/new.html')
+    elif not re.search(r"[!@#0^&*()+]+", user_password):
+        flash("Password must contain at least one(1) special character", "danger")
+        return render_template('users/new.html')
+    
+    # user_hashed_password = generate_password_hash(user_password)
 
 
     new_user = User(
