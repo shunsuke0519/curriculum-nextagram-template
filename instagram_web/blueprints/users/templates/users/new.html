@@ -1,6 +1,23 @@
 
 {% extends "_layout.html" %} {% block content %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class='alert-sucess'>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+{% for error in errors if errors|length > 0 %}
+<div class="alert-danger">
+ <h4>{{ error }}</h4>
+</div>
+{% endfor %}
+
 <form action="{{url_for('users.create')}}" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" 
+
     
     <div class="form-group">
     <label for="InputTitle">USER NAME</label>

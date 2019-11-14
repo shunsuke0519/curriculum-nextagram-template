@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, url_for, request, flash, redirect
 from models.user import User
 from werkzeug.security import check_password_hash, generate_password_hash
 import re
+#import session
+from flask_login import current_user
 
 users_blueprint = Blueprint('users',
                             __name__,
@@ -25,21 +27,20 @@ def create():
     user_email = request.form.get("email")
     user_name = request.form.get("name")
     password = request.form.get("password")
-    # hashed_password = generate_password_hash(password) # store this in database
+    # hashed_password = generate_password_hash(password) 
     # user_password = hashed_password
     user_password = generate_password_hash(password)
 
-    if len(user_password) < 6 :
-        flash("Password must be more than 6 characters !", "danger")
-        return render_template('users/new.html')
-    elif not re.search(r"([A-Z]+[a-z]+|[a-z]+[A-Z]+)", user_password):
-        flash("Password must contain at least one(1) upper and one(1) lower case", "danger")
-        return render_template('users/new.html')
-    elif not re.search(r"[!@#0^&*()+]+", user_password):
-        flash("Password must contain at least one(1) special character", "danger")
-        return render_template('users/new.html')
+    # if len(user_password) < 6 :
+    #     flash("Password must be more than 6 characters !", "danger")
+    #     return render_template('users/new.html')
+    # elif not re.search(r"([A-Z]+[a-z]+|[a-z]+[A-Z]+)", user_password):
+    #     flash("Password must contain at least one(1) upper and one(1) lower case", "danger")
+    #     return render_template('users/new.html')
+    # elif not re.search(r"[!@#0^&*()+]+", user_password):
+    #     flash("Password must contain at least one(1) special character", "danger")
+    #     return render_template('users/new.html')
     
-    # user_hashed_password = generate_password_hash(user_password)
 
 
     new_user = User(
@@ -54,10 +55,10 @@ def create():
     #     password = request.form.get("password"))
 
     if new_user.save():
-        print("Successfully signed up !", "success")
+        flash("Successfully signed up !", "success")
         return redirect(url_for('users.new'))
     else:
-        return render_template('users/new.html', error=new_user.errors)
+        return render_template('users/new.html', errors=new_user.errors)
 
 
 #Get form data
@@ -73,12 +74,18 @@ def index():
     return "USERS"
 
 
-@users_blueprint.route('/<id>/edit', methods=['GET'])
+#session
+@users_blueprint.route('/<id>/edit', methods=["GET"])
 def edit(id):
-    pass
-
+    user = User.get_or_none(User.username==username)
+    if current_user.role == "admin" or current_user.id == user.id:
+        return render_template("users/edit.html",user=user)
+    else:
+        # flash({you are not allowed to update {user.username}'s profile'})
+        print("error")
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
     pass
+
 

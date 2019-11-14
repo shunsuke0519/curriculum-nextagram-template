@@ -3,6 +3,8 @@ from flask import render_template
 from instagram_web.blueprints.users.views import users_blueprint
 from flask_assets import Environment, Bundle
 from .util.assets import bundles
+from flask_login import LoginManager
+from models.user import User
 
 assets = Environment(app)
 assets.register(bundles)
@@ -17,3 +19,8 @@ def internal_server_error(e):
 @app.route("/")
 def home():
     return render_template('home.html')
+
+
+
+
+
