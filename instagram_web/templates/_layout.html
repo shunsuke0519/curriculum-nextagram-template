@@ -1,44 +1,72 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <head>
+   <meta charset="utf-8" />
+     <meta
+       name="viewport"
+       content="width=device-width, initial-scale=1, shrink-to-fit=no"
+     />
+     <link
+       rel="shortcut icon"
+       href="{{ url_for('static', filename='image/favicon.ico') }}"
+     />
+     <link
+       rel="stylesheet"
+       href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+       crossorigin="anonymous"
+     />
+     {% assets "home_css" %}
+     <link rel="stylesheet" href="{{ ASSET_URL }}" />
+     {% endassets %} {% assets "home_js" %}
+     <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+     {% endassets %} {% block header %} {% endblock %}
 
+     <title>
+     NEXTAGRAM : {% block title %} {% endblock %}
+     </title>
+     </head>
+   <body>
+   {## session ##}
+    {% if current_user.is_authenticated %}
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-   
-    <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+       <a class="navbar-brand" href="/">Nextagram</a>
+       <button
+         class="navbar-toggler"
+         type="button"
+         data-toggle="collapse"
+         data-target="#navbarSupportedContent"
+         aria-controls="navbarSupportedContent"
+         aria-expanded="false"
+         aria-label="Toggle navigation"
+       >
+         <span class="navbar-toggler-icon"></span>
+       </button>
 
-    {% assets "home_css" %}
-      <link rel="stylesheet" href="{{ ASSET_URL }}">
-    {% endassets %}
-
-    {% assets "home_js" %}
-      <script type="text/javascript" src="{{ ASSET_URL }}"></script>
-    {% endassets %}
-
-    {% block header %}
-    {% endblock %}
-
-    {% if session['user_id'] %}
-    
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">NEXTAGRAM</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item">
+       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+         <ul class="navbar-nav mr-auto">
+           <li class="nav-item">
+             <a
+               class="nav-link"
+               href="{{ url_for('users.edit', id=current_user.id )}}"
+               >My Profile
+             </a>
+           </li>
+           <li class="nav-item">
+             <a
+               class="nav-link"
+               href="{{ url_for('users.image', id=current_user.id )}}"
+               >Upload
+             </a>
+           </li>
+           
+           <li class="nav-item">
              <a class="nav-link" href="{{ url_for('sessions.handle_sign_out') }}"
                >Sign Out</a
              >
-              </li>
-            </ul>
+           </li>
+         </ul>
          <form class="form-inline my-2 my-lg-0">
            <input
              class="form-control mr-sm-2"
@@ -52,49 +80,110 @@
          </form>
        </div>
      </nav>
-    
 
-    {% else %}
+     {% else %}
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">NEXTAGRAM</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item">
-                    <a class="nav-link" href="/sessions/signin">SIGN IN</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/users/new">SIGN UP</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+       <a class="navbar-brand" href="/">Nextagram</a>
+       <button
+         class="navbar-toggler"
+         type="button"
+         data-toggle="collapse"
+         data-target="#navbarSupportedContent"
+         aria-controls="navbarSupportedContent"
+         aria-expanded="false"
+         aria-label="Toggle navigation"
+       >
+         <span class="navbar-toggler-icon"></span>
+       </button>
 
-{% endif %}
+       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+         <ul class="navbar-nav mr-auto">
+           <li class="nav-item active">
+             <a class="nav-link" href="/sessions/signin"
+               >Sign In <span class="sr-only">(current)</span></a
+             >
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="/users/new">Sign Up</a>
+           </li>
+           <!-- <li class="nav-item dropdown">
+             <a
+               class="nav-link dropdown-toggle"
+               href="#"
+               id="navbarDropdown"
+               role="button"
+               data-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false"
+             >
+               Dropdown
+             </a>
+             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+               <a class="dropdown-item" href="#">Action</a>
+               <a class="dropdown-item" href="#">Another action</a>
+               <div class="dropdown-divider"></div>
+               <a class="dropdown-item" href="#">Something else here</a>
+             </div>
+           </li>
+           <li class="nav-item">
+             <a
+               class="nav-link disabled"
+               href="#"
+               tabindex="-1"
+               aria-disabled="true"
+               >Disabled</a
+             >
+           </li> -->
+         </ul>
+         <!-- <form class="form-inline my-2 my-lg-0">
+           <input
+             class="form-control mr-sm-2"
+             type="search"
+             placeholder="Search"
+             aria-label="Search"
+           />
+           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+             Search
+           </button>
+         </form> -->
+       </div>
+     </nav>
 
-    <title>
-      {% block title %}
-      {% endblock %}
-    </title>
+ {## session ##}
+    {% endif %}
 
-  </head>
-  <body>
-    {% block content %}
-    {% endblock %}
-
-    <footer>
-      Made with &hearts; at <a target="_blank" href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT Academy</a>
-    </footer>
-    </footer>
+     <div class="container">
+       {% block content %} {% endblock %}
+     </div>
+     <footer>
+     Made with &hearts; at
+       <a
+         target="_blank"
+         href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram"
+         >NEXT Academy</a
+       >
+     </footer>
      <script
        src="https://code.jquery.com/jquery-3.4.1.js"
        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
        crossorigin="anonymous"
      ></script>
-
-  </body>
-</html>
+     <script
+       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+       crossorigin="anonymous"
+     ></script>
+     <script
+       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+       integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+       crossorigin="anonymous"
+     ></script>
+     <script
+       src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+       crossorigin="anonymous"
+     ></script>
+   </body>
+ </html>
