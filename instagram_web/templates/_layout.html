@@ -22,7 +22,9 @@
 
     {% block header %}
     {% endblock %}
-    <div class="container">
+
+    {% if session['user_id'] %}
+    
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="/">NEXTAGRAM</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,14 +34,47 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item">
-                    <a class="nav-link" href="/users/new">SIGNUP</a>
+             <a class="nav-link" href="{{ url_for('sessions.handle_sign_out') }}"
+               >Sign Out</a
+             >
+              </li>
+            </ul>
+         <form class="form-inline my-2 my-lg-0">
+           <input
+             class="form-control mr-sm-2"
+             type="search"
+             placeholder="Search"
+             aria-label="Search"
+           />
+           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+             Search
+           </button>
+         </form>
+       </div>
+     </nav>
+    
+
+    {% else %}
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">NEXTAGRAM</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                    <a class="nav-link" href="/sessions/signin">SIGN IN</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/users/new">LOGOUT</a>
+                    <a class="nav-link" href="/users/new">SIGN UP</a>
                 </li>
             </ul>
         </div>
     </nav>
+
+{% endif %}
 
     <title>
       {% block title %}
@@ -54,5 +89,12 @@
     <footer>
       Made with &hearts; at <a target="_blank" href="https://www.nextacademy.com/?utm_source=github&utm_medium=student-challenge&utm_campaign=flask-nextagram">NEXT Academy</a>
     </footer>
+    </footer>
+     <script
+       src="https://code.jquery.com/jquery-3.4.1.js"
+       integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+       crossorigin="anonymous"
+     ></script>
+
   </body>
 </html>

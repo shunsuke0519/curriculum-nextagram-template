@@ -1,48 +1,61 @@
-from flask import Blueprint, render_template, url_for, request, flash, redirect
+from flask import Blueprint, render_template, url_for, request, flash, redirect, session
 from flask_login import login_user
 from models.user import User
 from werkzeug.security import check_password_hash
 from flask_login import logout_user
+from flask_login import login_user 
+from instagram_web.util.google_oauth import oauth
 
 sessions_blueprint = Blueprint('sessions',
                             __name__,
                             template_folder='templates')
 
-@sessions_blueprint.route('/'), methods=[GET]
-def show_entries():
-    if not session.get('logged_in'):
-        return redirect('/login/new')
-    return render_template('entries/index.html')
+@sessions_blueprint.route("/signin", methods=["GET"])
+def sign_in():
+    return render_template("sessions/sign_in.html")
 
 
-# you dont need this because you specify it with @sessinos_blueprint
-# @sessions_blueprint.route('/')
-# def show_entries():
-#     if not session.get('logged_in'):
-#         return redirect('/login/new')
-#     return render_template('entries/index.html')
 
+@sessions_blueprint.route('/signin', methods=['POST'])
+def handle_sign_in():
 
-@sessions_blueprint.route('/', methods=['POST'])
-def create():
-    user_email = request.form.get("email")
-    user_name = request.form.get("name")
+    username = request.form.get("username")
     password = request.form.get("password")
+    user = User.get_or_none(username=username)
+
     if user:
-        if check_password_hash(user.password, request.form.get('password')) :
-            login_user(user) # store user id in session
-            return redirect(url_for('users.show')) # redirect to profile page
+        result = check_password_hash(user.password, password)
+            
+        if result:
+            flash("You are logged in", "success")
+            session["user_id"] = user.id 
+            return redirect("/")
+
         else:
-            # password not matched
-            return redirect(url_for('users/new.html'))
+            flash("Login in fail, please try again", "danger")
+            return render_template('sessions/sign_in.html')
+
     else:
-      # no user found in database
-        return redirect(url_for('users/new.html'))
+        pass
 
 
-@sessions_blueprint.route('/delete',methods=['POST'])
-@login_required
-def destroy():
-    logout_user()
-    return redirect(url_for('sessions.new'))
+@sessions_blueprint.route('/signout')
+def handle_sign_out():
+     session.pop('user_id', None)
+     flash("You have successfully logged out", "success")
+     return redirect(url_for('sessions.sign_in'))
+
+
+
+# @sessions_blueprint.route('/delete',methods=['POST'])
+# @login_required
+# def destroy():
+#     logout_user()
+#     return redirect(url_for('sessions.new'))
+
+
+# @sessions_blueprint.route('/login/google', methods=[GET])
+# def google_login():
+#     token = oauth.google.authorize_access_token()
+#     email = oauth.google.get('https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
 

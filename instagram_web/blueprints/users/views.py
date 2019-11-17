@@ -24,12 +24,17 @@ def new():
 
 @users_blueprint.route('/', methods=['POST'])
 def create():
-    user_email = request.form.get("email")
-    user_name = request.form.get("name")
-    password = request.form.get("password")
-    # hashed_password = generate_password_hash(password) 
-    # user_password = hashed_password
-    user_password = generate_password_hash(password)
+
+    user_password = request.form.get("password")
+    user_hashed_password = generate_password_hash("user_password")
+
+    new_user = User(username=request.form.get("username"), email=request.form.get("email"), password=user_hashed_password)
+        
+    if new_user.save():
+        flash("Successfully signed up !", "success")
+        return redirect(url_for('users.new'))
+    else:
+        return render_template('users/new.html', errors=new_user.errors)
 
     # if len(user_password) < 6 :
     #     flash("Password must be more than 6 characters !", "danger")
@@ -43,10 +48,10 @@ def create():
     
 
 
-    new_user = User(
-        email=user_email,
-        name=user_name,
-        password=user_password)
+    # new_user = User(
+    #     email=user_email,
+    #     name=user_name,
+    #     password=user_password)
 
         
     # return render_template('users/new.html',
@@ -54,11 +59,6 @@ def create():
     #     usersname = request.form.get("name"),
     #     password = request.form.get("password"))
 
-    if new_user.save():
-        flash("Successfully signed up !", "success")
-        return redirect(url_for('users.new'))
-    else:
-        return render_template('users/new.html', errors=new_user.errors)
 
 
 #Get form data
@@ -77,12 +77,13 @@ def index():
 #session
 @users_blueprint.route('/<id>/edit', methods=["GET"])
 def edit(id):
-    user = User.get_or_none(User.username==username)
-    if current_user.role == "admin" or current_user.id == user.id:
-        return render_template("users/edit.html",user=user)
-    else:
-        # flash({you are not allowed to update {user.username}'s profile'})
-        print("error")
+    pass
+    # user = User.get_or_none(User.username==current_user)
+    # if current_user.role == "admin" or current_user.id == user.id:
+    #     return render_template("users/edit.html",user=user)
+    # else:
+    #     # flash({you are not allowed to update {user.username}'s profile'})
+    #     print("error")
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):

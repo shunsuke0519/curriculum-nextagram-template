@@ -1,5 +1,6 @@
 
-{% extends "_layout.html" %} {% block content %}
+{% extends "_layout.html" %} {% block title %} Sign Up Page {% endblock%} {%
+ block content %}
 {% with messages = get_flashed_messages() %}
   {% if messages %}
     <ul class='alert-sucess'>
@@ -15,26 +16,31 @@
 </div>
 {% endfor %}
 
-<form action="{{url_for('users.create')}}" method="post">
+<div class="alert">
+<h1>Sign Up</h1>
+</div>
+
+<form action="{{url_for('users.create')}}" method="POST">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" 
 
     
     <div class="form-group">
-    <label for="InputTitle">USER NAME</label>
+    <label for="InputTitle">Username</label>
     <input type="text" class="form-control" id="InputTitle" name=name>
     </div>
 
     <div class="form-group">
-    <label for="InputPassword">EMAIL</label>
+    <label for="InputPassword">Email</label>
     <input type="email" class="form-control" id="InputEmail" name=email>
     </div>
 
     <div class="form-group">
-    <label for="InputPassword">PASSWORD</label>
+    <label for="InputPassword">Password</label>
     <input type="password" class="form-control" id="InputPassword" name=password>
     </div>
 
-    <button type="submit" class="btn btn-primary">SIGNUP</button>
+
+    <button type="submit" class="btn btn-primary">Sign Up</button>
     </form>
 {% endblock %} 
 

@@ -4,6 +4,7 @@ from flask import Flask
 from models.base_model import db
 from flask_login import UserMixin, LoginManager
 from flask_wtf.csrf import CSRFProtect
+from models.user import User
 
 # from flask_wtf.csrf import CSRFProtect
 
