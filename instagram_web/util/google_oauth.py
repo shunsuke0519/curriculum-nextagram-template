@@ -24,4 +24,3 @@ oauth.register('google',
         'prompt': 'consent'
     }
 )
-

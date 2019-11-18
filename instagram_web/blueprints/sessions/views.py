@@ -10,8 +10,6 @@ sessions_blueprint = Blueprint('sessions',
                              template_folder='templates')
 
 
-
-
 @sessions_blueprint.route('/signin', methods=['GET'])
 def sign_in():
      return render_template('sessions/sign_in.html')
