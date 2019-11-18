@@ -101,7 +101,7 @@ def update(id):
 def image(id):
 
      user = User.get_by_id(id)
-     return render_template('users/upload.html')        
+     return render_template('users/upload.html', id=current_user.id)
 
 @users_blueprint.route('/<id>/upload', methods=['POST'])
 @login_required

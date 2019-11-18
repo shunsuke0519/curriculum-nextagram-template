@@ -10,7 +10,7 @@ else:
 oauth = OAuth()
 
 oauth.register('google',
-    client_id=config.GOOGLE_CLIENT_KEY,
+    client_id=config.GOOGLE_CLIENT_ID,
     client_secret=config.GOOGLE_CLIENT_SECRET,
     access_token_url='https://accounts.google.com/o/oauth2/token',
     access_token_params=None,
@@ -24,3 +24,4 @@ oauth.register('google',
         'prompt': 'consent'
     }
 )
+

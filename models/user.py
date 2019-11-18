@@ -22,3 +22,9 @@ class User(UserMixin, BaseModel):
 
         def is_authenticated(self):
             return True
+
+        
+        @hybrid_property
+        def profile_image_url(self):
+
+            return Config.S3_LOCATION + self.image    
