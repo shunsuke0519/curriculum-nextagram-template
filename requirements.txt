@@ -37,11 +37,12 @@ Mako==1.1.0
 MarkupSafe==1.1.0
 peewee==3.8.2
 pipenv==2018.11.26
+peewee-db-evolve==3.7.0
 psycopg2==2.8.4
 psycopg2-binary==2.8.4
 pycodestyle==2.5.0
 pycparser==2.19
-python-dateutil==2.8.0
+python-dateutil==2.8.0git 
 python-dotenv==0.10.1
 python-editor==1.0.4
 requests==2.22.0
