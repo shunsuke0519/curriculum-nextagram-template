@@ -1,8 +1,8 @@
-from models.base_model import BaseModel
 import peewee as pw
-from flask_login import UserMixin
-from config import Config
 from playhouse.hybrid import hybrid_property
+from config import Config
+from flask_login import UserMixin
+from models.base_model import BaseModel
 
 
 class User(UserMixin, BaseModel):

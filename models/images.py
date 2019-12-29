@@ -1,9 +1,10 @@
 import peewee as pw
 from models.user import User
 from playhouse.hybrid import hybrid_property
+from config import Config
 from flask_login import UserMixin
 from models.base_model import BaseModel
-from config import Config
+
 
 
 class Image(UserMixin, BaseModel):
