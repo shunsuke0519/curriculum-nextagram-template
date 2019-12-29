@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from models.user import *
 from models.images import *
+from models.followers import *
+
 from flask_login import login_required, current_user
 from werkzeug import secure_filename
 from instagram_web.util.helpers import upload_file_to_s3
@@ -42,12 +44,38 @@ def create(id):
 @login_required
 def show(id):
 
-     user = User.get_by_id(id)
+    user = User.get_by_id(id)
 
-     if user.id == current_user.id:
+    following = Follower.following
+    all_following = []
+
+    for i in following:
+        all_following.append(i)
+
+    access = False
+
+    if user in all_following:
+        access = True
+    
+    user_following = User.select().join(Follower, 
+    on=Follower.user).where(Follower.follower==user.id)
+    num_following = len(user_following)
+
+    user_followers = User.select().join(Follower, 
+    on=Follower.follower).where(Follower.user==user.id)
+    num_followers = len(user_followers)
+
+ 
+    if user.id == current_user.id or access == True:
         images = Image.select(Image.image).join(User).where(Image.username==id)		
+        num_images = len(images)
         return render_template('images/images.html', images=images, 
-        user_id=user.id)
-     else:
-         flash("You are not authorized to access this page" , "danger")
-         return render_template('images/images.html', user_id=user.id)
+        user_id=user.id, user=user, access=access, num_images=num_images, 
+        num_following=num_following, num_followers=num_followers)
+
+    else:
+        images = Image.select().join(User).where(Image.username==id)
+        num_images = len(images)
+
+        flash("This page is private. Request to follow to be able to  access this profile's page" , "danger")
+        return render_template('images/images.html', user_id=user.id, user=user, access=access, num_images=num_images, num_following=num_following, num_followers=num_followers)

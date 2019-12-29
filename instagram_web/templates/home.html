@@ -19,7 +19,37 @@
  <div class="mt-3 alert alert-{{ category }}">{{ message }}</div>
 
  {% endfor %} {% endif %} {% endwith %}
+ 
+ {% if current_user.is_authenticated %}
+   <div class="header mb-5">
+     <h1>{{current_user.username}}'s Homepage</h1>
+   </div>
 
-<h1></h1>
-<img src="../static/home.jpg" alt="hoge image " height="100%" width="100%"/>
- {% endblock %}
+    {% else %}
+
+<div class="header mb-5">
+     <h1>Homepage</h1>
+   </div>
+
+     {% endif %}
+
+
+    <div class="row">
+
+      {% for user in users %}
+
+        <div class="col-6 text-center mb-3">
+       <img src="{{user.profile_image_url}}" style="border-radius: 50%; height: 150px; width: 150px;" alt="profile-image" class="mb-3">
+       <span class="d-block">
+         <a href="{{url_for('images.show', id=user.id)}}" style="color: black;text-decoration: underline;">{{user.username}}</a>
+       </span>  
+
+ 
+        </div>
+
+      {% endfor %}
+
+      </div>
+      
+      {% endblock %}
+

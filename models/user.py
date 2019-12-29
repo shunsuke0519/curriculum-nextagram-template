@@ -10,7 +10,9 @@ class User(UserMixin, BaseModel):
     email = pw.CharField(null=True, unique=True)
     password = pw.CharField(null=True)
     role = pw.CharField(default="user")
-    image = pw.TextField(null=True)
+    image = pw.TextField(null=True, default="none.jpg")
+    description = pw.CharField(null=True)
+
 
 
     
